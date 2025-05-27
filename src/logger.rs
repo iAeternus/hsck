@@ -55,14 +55,6 @@ impl From<&str> for LogLevel {
     }
 }
 
-/// 初始化日志系统
-///
-/// 使用默认配置初始化日志系统
-pub fn init() -> Result<()> {
-    let log_config = LogConfig::default();
-    init_with_config(&log_config)
-}
-
 /// 使用配置文件中的设置初始化日志系统
 ///
 /// # 参数

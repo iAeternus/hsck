@@ -172,15 +172,6 @@ pub struct LogConfig {
     pub console_output: bool,
 }
 
-impl Default for LogConfig {
-    fn default() -> Self {
-        Self {
-            level: default_log_level(),
-            console_output: default_console_output(),
-        }
-    }
-}
-
 impl LogConfig {
     /// 验证日志配置
     pub fn validate(&self) -> Result<(), String> {

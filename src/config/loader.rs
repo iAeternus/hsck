@@ -76,6 +76,8 @@ mod tests {
         assert_eq!(config.stu_config.list.len(), 2);
         assert_eq!(config.stu_config.list[0].name, "测试学生1");
         assert_eq!(config.stu_config.list[0].email, "test1@example.com");
+        assert!(config.log_config.console_output);
+        assert_eq!(config.log_config.level, "debug");
 
         Ok(())
     }
@@ -98,6 +100,8 @@ mod tests {
         assert_eq!(config.imap_config.server, "imap.test.com");
         assert_eq!(config.imap_config.out_dir, "/var/data/prod/out");
         assert_eq!(config.stu_config.list.len(), 0);
+        assert!(!config.log_config.console_output);
+        assert_eq!(config.log_config.level, "info");
 
         Ok(())
     }
@@ -126,6 +130,10 @@ out_dir = "/test/out"
 
 [stu_config]
 list = []
+
+[log_config]
+level = "info"
+console_output = false
 "#;
 
         fs::write(cfg_dir.join("default.toml"), default_config)?;
@@ -142,6 +150,10 @@ list = [
     { name = "测试学生1", email = "test1@example.com" },
     { name = "测试学生2", email = "test2@example.com" }
 ]
+
+[log_config]
+level = "debug"
+console_output = true
 "#;
 
         fs::write(cfg_dir.join("dev.toml"), dev_config)?;
@@ -155,6 +167,10 @@ encryption = "tls"
 
 [imap_config]
 out_dir = "/var/data/prod/out"
+
+[log_config]
+level = "info"
+console_output = false
 "#;
 
         fs::write(cfg_dir.join("prod.toml"), prod_config)?;

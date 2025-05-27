@@ -13,13 +13,6 @@ pub struct Stu {
 }
 
 impl Stu {
-    // /// 创建带验证的新学生
-    // pub fn new(name: String, email: String) -> Result<Self, String> {
-    //     let student = Self { name, email };
-    //     student.check_email()?;
-    //     Ok(student)
-    // }
-
     /// 验证邮箱格式
     ///
     /// 如果邮箱有效则返回Ok，否则返回错误信息

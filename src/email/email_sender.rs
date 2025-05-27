@@ -180,7 +180,7 @@ mod tests {
     use crate::config::loader;
 
     #[test]
-    // #[ignore]
+    #[ignore]
     fn should_send_email() -> Result<()> {
         // Given
         let app_config = loader::load_config()?;
