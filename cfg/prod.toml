@@ -14,7 +14,8 @@ out_dir = "/var/data/prod/out"
 
 [stu_config]
 list = [
-    
+    { name = "测试学生1", email = "test1@example.com" },
+    { name = "测试学生2", email = "test2@example.com" }
 ]
 
 [log_config]
