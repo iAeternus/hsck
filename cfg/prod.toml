@@ -1,0 +1,18 @@
+[smtp_config]
+server = "smtp.production-server.com"
+port = 465
+username = "${SMTP_USERNAME}"
+password = "${SMTP_PASSWORD}"
+encryption = "tls"
+
+[imap_config]
+server = "imap.production-server.com"
+port = 993
+username = "${IMAP_USERNAME}"
+password = "${IMAP_PASSWORD}"
+out_dir = ""
+
+[stu_config]
+list = [
+    
+]
