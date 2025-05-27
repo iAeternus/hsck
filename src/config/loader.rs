@@ -1,6 +1,6 @@
 use config::{Config, ConfigError, File};
+use log::info;
 use std::env;
-use tracing::info;
 
 use super::app_config::AppConfig;
 

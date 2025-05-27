@@ -1,5 +1,5 @@
 [smtp_config]
-server = "smtp.production-server.com"
+server = "smtp.prod.com"
 port = 465
 username = "${SMTP_USERNAME}"
 password = "${SMTP_PASSWORD}"
@@ -10,9 +10,13 @@ server = "imap.production-server.com"
 port = 993
 username = "${IMAP_USERNAME}"
 password = "${IMAP_PASSWORD}"
-out_dir = ""
+out_dir = "/var/data/prod/out"
 
 [stu_config]
 list = [
     
 ]
+
+[log_config]
+level = "info"
+console_output = false

@@ -9,7 +9,7 @@ use lettre::{
     },
     Address, Message, SmtpTransport, Transport,
 };
-use tracing::{error, info};
+use log::error;
 
 /// 电子邮件发送器
 ///
@@ -69,37 +69,29 @@ impl<'a> EmailSender<'a> {
         Ok(())
     }
 
-    /// 发送作业未提交提醒给多个学生
+    /// 发送作业未提交提醒给单个学生
     ///
     /// # param
     /// * `homework_name` - 作业名称
-    /// * `missing` - 未提交作业的学生列表
+    /// * `student` - 未提交作业的学生
     ///
     /// # return
-    /// * `Result<()>` - 全部发送成功或首个错误
-    pub fn send_personal_notification(
-        &self,
-        homework_name: &str,
-        missing: &Vec<Stu>,
-    ) -> Result<()> {
-        for stu in missing {
-            let subject = "作业未提交提醒";
-            let text = format!(
-                "亲爱的{}同学：\n系统检测到您尚未提交作业<{}>，请及时提交。",
-                stu.name, homework_name
-            );
-            let html = format!(
-                r#"<p>亲爱的{}同学：</p>
-                <p>系统检测到您尚未提交作业<strong>{}</strong>，请及时提交。</p> 
-                <p>请发送作业到 1049469060@qq.com。</p>
-                <p>请勿回复这封邮件。</p>"#,
-                stu.name, homework_name
-            );
+    /// * `Result<()>` - 发送成功或错误
+    pub fn send_notification_to_student(&self, homework_name: &str, student: &Stu) -> Result<()> {
+        let subject = "作业未提交提醒";
+        let text = format!(
+            "亲爱的{}同学：\n系统检测到您尚未提交作业<{}>，请及时提交。",
+            student.name, homework_name
+        );
+        let html = format!(
+            r#"<p>亲爱的{}同学：</p>
+            <p>系统检测到您尚未提交作业<strong>{}</strong>，请及时提交。</p> 
+            <p>请发送作业到 1049469060@qq.com。</p>
+            <p>请勿回复这封邮件。</p>"#,
+            student.name, homework_name
+        );
 
-            self.send(&stu.email, subject, &text, &html)
-                .with_context(|| format!("发送邮件到{}-{}失败", stu.name, stu.email))?;
-        }
-        Ok(())
+        self.send(&student.email, subject, &text, &html)
     }
 
     /// 构建SMTP邮件发送器
@@ -175,15 +167,10 @@ impl<'a> EmailSender<'a> {
     /// # return
     /// * `Result<()>` - 发送成功或错误
     fn send_email(&self, mailer: &SmtpTransport, email: &Message, to: &str) -> Result<()> {
-        mailer
-            .send(email)
-            .map(|_| {
-                info!("✅ 邮件成功发送至 {}", to);
-            })
-            .map_err(|e| {
-                error!("❌ 发送到 {} 失败: {:?}", to, e);
-                anyhow::Error::new(e)
-            })
+        mailer.send(email).map(|_| ()).map_err(|e| {
+            error!("❌ 发送到 {} 失败: {:?}", to, e);
+            anyhow::Error::new(e)
+        })
     }
 }
 

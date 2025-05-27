@@ -1,0 +1,20 @@
+[smtp_config]
+server = "smtp.163.com"
+port = 465
+username = ""
+password = ""
+encryption = "tls"
+
+[imap_config]
+server = "imap.qq.com"
+port = 993
+username = ""
+password = ""
+out_dir = "/out"
+
+[stu_config]
+list = []
+
+[log_config]
+level = "info"
+console_output = false

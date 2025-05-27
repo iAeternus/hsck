@@ -8,6 +8,7 @@ pub struct AppConfig {
     pub smtp_config: SmtpConfig,
     pub imap_config: ImapConfig,
     pub stu_config: StuConfig,
+    pub log_config: LogConfig,
 }
 
 impl AppConfig {
@@ -21,6 +22,9 @@ impl AppConfig {
 
         // 验证学生配置
         self.stu_config.validate()?;
+
+        // 验证日志配置
+        self.log_config.validate()?;
 
         Ok(())
     }
@@ -156,4 +160,47 @@ impl StuConfig {
 
         Ok(())
     }
+}
+
+/// 日志配置
+#[derive(Debug, Deserialize)]
+pub struct LogConfig {
+    #[serde(default = "default_log_level")]
+    pub level: String,
+
+    #[serde(default = "default_console_output")]
+    pub console_output: bool,
+}
+
+impl Default for LogConfig {
+    fn default() -> Self {
+        Self {
+            level: default_log_level(),
+            console_output: default_console_output(),
+        }
+    }
+}
+
+impl LogConfig {
+    /// 验证日志配置
+    pub fn validate(&self) -> Result<(), String> {
+        let valid_levels = ["error", "warn", "info", "debug", "trace"];
+
+        if !valid_levels.contains(&self.level.to_lowercase().as_str()) {
+            return Err(format!(
+                "Invalid log level: {}. Valid levels are: error, warn, info, debug, trace",
+                self.level
+            ));
+        }
+
+        Ok(())
+    }
+}
+
+fn default_log_level() -> String {
+    "info".to_string()
+}
+
+fn default_console_output() -> bool {
+    false
 }
