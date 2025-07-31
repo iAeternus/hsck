@@ -12,18 +12,27 @@ pub struct Cli {
     #[clap(short = 'n', long = "name", requires = "send")]
     pub homework_name: Option<String>,
 
+    /// 小组数量 TODO 检查组号，找出未提交的组
+    #[clap(short = 'g', long = "cnt", default_value = "0")]
+    pub group_cnt: i32,
+
     /// 是否接收并下载邮件到指定目录
     #[clap(short = 'r', long = "resv")]
     pub resv: bool,
-    
+
     /// 配置文件目录路径
-    #[clap(short = 'c', long = "config", value_name = "DIR", default_value = "cfg")]
+    #[clap(
+        short = 'c',
+        long = "config",
+        value_name = "DIR",
+        default_value = "cfg"
+    )]
     pub config_dir: PathBuf,
-    
+
     /// 环境（dev, prod）
     #[clap(short = 'e', long = "env", value_name = "ENV", default_value = "dev")]
     pub env: String,
-    
+
     /// 作业检查目录，默认为当前目录
     #[clap(short = 'd', long = "dir", value_name = "CHECK_DIR")]
     pub check_dir: Option<PathBuf>,
